@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/opt/bin/bash
 # vim: set ts=4:
 #---help---
 # Usage: alpine-chroot-install [options]
@@ -78,8 +78,8 @@ set -eu
 
 #=======================  C o n s t a n t s  =======================#
 
-: ${APK_TOOLS_URI:="https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.12.10/x86_64/apk.static"}
-: ${APK_TOOLS_SHA256:="d7506bb11327b337960910daffed75aa289d8bb350feab624c52965be82ceae8"}
+: ${APK_TOOLS_URI:="https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.12.10/aarch64/apk.static"}
+: ${APK_TOOLS_SHA256:="5ec01b6104157fa68f26bcf7ea53b1ddd7ff62afd0df43689b8b6130b81c2648"}
 
 # Alpine APK keys for packages verification.
 ALPINE_KEYS='
@@ -281,14 +281,15 @@ while getopts 'a:b:d:i:k:m:p:r:t:hv' OPTION; do
 		p) ALPINE_PACKAGES="${ALPINE_PACKAGES:-} $OPTARG";;
 		r) EXTRA_REPOS="${EXTRA_REPOS:-} $OPTARG";;
 		t) TEMP_DIR="$OPTARG";;
-		h) usage; exit 0;;
 		v) echo "alpine-chroot-install $VERSION"; exit 0;;
+		h) usage; exit 0;;
+		*) usage; exit 1;;
 	esac
 done
 
 : ${ALPINE_BRANCH:="latest-stable"}
 : ${ALPINE_MIRROR:="http://dl-cdn.alpinelinux.org/alpine"}
-: ${ALPINE_PACKAGES:="build-base ca-certificates ssl_client"}
+: ${ALPINE_PACKAGES:=""}
 : ${ARCH:=}
 : ${BIND_DIR:=}
 : ${CHROOT_DIR:="/alpine"}
@@ -359,7 +360,7 @@ cp /etc/resolv.conf etc/resolv.conf
 "$APK" add \
 	--root . --update-cache --initdb --no-progress \
 	${ARCH:+--arch $ARCH} \
-	alpine-baselayout apk-tools busybox busybox-suid musl-utils
+	alpine-baselayout apk-tools busybox
 
 if "$APK" info --root . --no-progress --quiet alpine-release >/dev/null; then
 	"$APK" add --root . --no-progress alpine-release
