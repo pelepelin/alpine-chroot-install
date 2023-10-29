@@ -32,7 +32,7 @@ List may appear incomplete.
 
 ## Installation
 
-* Download [raw script](https://github.com/pelepelin/alpine-chroot-install/raw/master/alpine-chroot-install).
+* Download [raw script](https://github.com/pelepelin/alpine-chroot-install/raw/aarch64/alpine-chroot-install).
 * `chmod +x alpine-chroot-install`
 * `./alpine-chroot-install -h` for usage. Default `CHROOT_DIR` is most likely not where you want to install.
 * `./alpine-chroot-install -d CHROOT_DIR`.
